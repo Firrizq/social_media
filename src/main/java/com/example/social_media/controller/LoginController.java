@@ -38,7 +38,7 @@ public class LoginController {
             session.setAttribute("loggedInUser", user.getUsername());
             
             // Redirect ke halaman utama (/)
-            return "redirect:/dashboard";
+            return "redirect:/";
         } else {
             // GAGAL LOGIN
             model.addAttribute("error", "The Credentials doesn't match");
