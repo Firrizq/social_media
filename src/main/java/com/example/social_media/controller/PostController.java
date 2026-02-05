@@ -75,4 +75,60 @@ public class PostController {
         // 5. Balik lagi ke halaman detail tadi
         return "redirect:/post/" + id;
     }
+
+    @GetMapping("/comment/{id}")
+    public String commentDetail(@PathVariable Long id, HttpSession session, Model model) {
+        // Cek Login
+        String username = (String) session.getAttribute("loggedInUser");
+        if (username == null) return "redirect:/login";
+
+        // Ambil Komentar yang mau dilihat (Parent)
+        Comment currentComment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Komentar tidak ditemukan"));
+
+        // Ambil data User untuk sidebar
+        User user = userRepository.findByUsername(username);
+
+        model.addAttribute("username", username);
+        model.addAttribute("targetComment", currentComment); // Komentar utama yang sedang dilihat
+        model.addAttribute("replies", currentComment.getReplies()); // Anak-anaknya
+        
+        return "comment_detail";
+    }
+
+    @PostMapping("/comment/{id}/reply")
+    public String replyToComment(@PathVariable Long id, 
+                                 @RequestParam String content, 
+                                 HttpSession session) {
+        
+        String username = (String) session.getAttribute("loggedInUser");
+        if (username == null) return "redirect:/login";
+
+        User user = userRepository.findByUsername(username);
+        
+        // Cari Parent Comment (Komentar yang sedang dibalas)
+        Comment parentComment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Parent comment not found"));
+
+        if (content != null && !content.trim().isEmpty()) {
+            Comment reply = new Comment();
+            reply.setComment(content);
+            reply.setUser(user);
+            
+            // PENTING: Set Parent & Post
+            reply.setParent(parentComment); // Ini anak dari komentar di atas
+            reply.setPost(parentComment.getPost()); // Tetap nyambung ke Post aslinya
+            reply.setCreatedAt(java.time.LocalDateTime.now());
+            
+            commentRepository.save(reply);
+            
+            // Update Comment Count di Post Asli (Opsional, biar sinkron)
+            Post originalPost = parentComment.getPost();
+            originalPost.setCommentCount(originalPost.getCommentCount() + 1);
+            postRepository.save(originalPost);
+        }
+
+        // Refresh halaman komentar yang sama
+        return "redirect:/comment/" + id;
+    }
 }
