@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Social Media Zaidan</title>
+    <title>Beranda</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
@@ -9,19 +9,17 @@
     <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-sm">
         <div class="mb-4">
             <div class="w-24 h-24 bg-blue-500 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold">
-                Z
+                <span th:text="${#strings.substring(username, 0, 1).toUpperCase()}">U</span>
             </div>
         </div>
         
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">Halo, Zaidan!</h1>
-        <p class="text-gray-600 mb-6">
-            Project Spring Boot ini sudah jalan pakai 
-            <span class="text-blue-500 font-semibold">Tailwind CSS</span>.
-        </p>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">
+            Halo, <span th:text="${username}" class="text-blue-600">User</span>!
+        </h1>
         
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
-            Keren Banget!
-        </button>
+        <p class="text-gray-600 mb-6">Selamat datang kembali di dashboard.</p>
+        
+        <a href="/login" class="text-sm text-red-500 hover:underline">Keluar (Logout)</a>
     </div>
 
 </body>
