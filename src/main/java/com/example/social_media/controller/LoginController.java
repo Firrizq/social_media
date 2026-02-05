@@ -44,4 +44,13 @@ public class LoginController {
             return "login"; // Balik lagi ke halaman login
         }
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // 1. HAPUS SEMUA ISI KANTONG (SESSION)
+        session.invalidate(); 
+        
+        // 2. Tendang balik ke halaman login
+        return "redirect:/login";
+    }
 }
