@@ -9,7 +9,10 @@
     <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-sm">
         <div class="mb-4">
             <div class="w-24 h-24 bg-blue-500 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold">
-                <span th:text="${#strings.substring(username, 0, 1).toUpperCase()}">U</span>
+                <div class="w-24 h-24 bg-blue-500 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold">
+                    <span th:if="${username != null}" th:text="${#strings.substring(username, 0, 1).toUpperCase()}">U</span>
+                    <span th:unless="${username != null}">?</span>
+                </div>
             </div>
         </div>
         

@@ -38,10 +38,10 @@ public class LoginController {
             session.setAttribute("loggedInUser", user.getUsername());
             
             // Redirect ke halaman utama (/)
-            return "redirect:/";
+            return "redirect:/dashboard";
         } else {
             // GAGAL LOGIN
-            model.addAttribute("error", "Email atau Password salah bro!");
+            model.addAttribute("error", "The Credentials doesn't match");
             return "login"; // Balik lagi ke halaman login
         }
     }
