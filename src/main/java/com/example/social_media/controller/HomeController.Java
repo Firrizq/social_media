@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -43,5 +45,27 @@ public class HomeController {
         model.addAttribute("posts", listPost); // Kirim daftar post
         
         return "dashboard"; 
+    }
+
+    @PostMapping("/post")
+    public String createPost(@RequestParam String content, HttpSession session) {
+        String username = (String) session.getAttribute("loggedInUser");
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        User user = userRepository.findByUsername(username);
+        
+        if (content != null && !content.trim().isEmpty()) {
+            Post newPost = new Post();
+            newPost.setContent(content);
+            newPost.setUser(user);
+            newPost.setLikeCount(0);
+            newPost.setCategoryId(1L); 
+            
+            postRepository.save(newPost);
+        }
+
+        return "redirect:/";
     }
 }

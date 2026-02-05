@@ -26,6 +26,9 @@ public class Post {
     @Column(name = "comment_count")
     private Integer commentCount = 0;
 
+    @Column(name = "category_id", nullable = false)
+    private Long categoryId;
+
     // RELASI: Tabel 'posts' punya kolom 'user_id' yang nyambung ke tabel 'users'
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
