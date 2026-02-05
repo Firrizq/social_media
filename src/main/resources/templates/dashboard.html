@@ -90,13 +90,17 @@
                         </div>
 
                         <div class="flex justify-between items-center mt-4 pt-4 border-t border-slate-700/50">
-                            <div class="flex gap-4 text-indigo-400">
-                                <i class="fa-regular fa-image cursor-pointer hover:text-indigo-300 transition"></i>
-                                <i class="fa-solid fa-paperclip cursor-pointer hover:text-indigo-300 transition"></i>
-                                <i class="fa-regular fa-face-smile cursor-pointer hover:text-indigo-300 transition"></i>
+                            
+                            <div class="relative">
+                                <i class="fa-solid fa-tag absolute left-3 top-2.5 text-indigo-400 text-xs"></i>
+                                <select name="categoryId" class="bg-slate-800 text-slate-300 text-xs font-semibold rounded-lg pl-8 pr-3 py-2 border border-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer appearance-none hover:bg-slate-700 transition">
+                                    <option th:each="cat : ${categories}" 
+                                            th:value="${cat.id}" 
+                                            th:text="${cat.name}"></option>
+                                </select>
                             </div>
                             
-                            <button type="submit" class="px-6 py-2 bg-slate-200 text-slate-900 rounded-lg font-bold text-sm hover:bg-white transition hover:scale-105">
+                            <button type="submit" class="px-6 py-2 bg-slate-200 text-slate-900 rounded-lg font-bold text-sm hover:bg-white transition hover:scale-105 shadow-lg shadow-white/10">
                                 Kirim <i class="fa-regular fa-paper-plane ml-1"></i>
                             </button>
                         </div>

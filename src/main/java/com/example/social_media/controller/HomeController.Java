@@ -1,9 +1,11 @@
 package com.example.social_media.controller;
 
 import com.example.social_media.model.Post;
+import com.example.social_media.model.PostCategory;
 import com.example.social_media.model.User;
 import com.example.social_media.repository.PostRepository;
 import com.example.social_media.repository.UserRepository;
+import com.example.social_media.repository.PostCategoryRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,42 +19,38 @@ import java.util.List;
 @Controller
 public class HomeController {
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private PostRepository postRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private PostCategoryRepository categoryRepository; // <--- INJECT REPO BARU
 
     @GetMapping("/")
     public String home(HttpSession session, Model model) {
         String username = (String) session.getAttribute("loggedInUser");
+        if (username == null) return "redirect:/login";
 
-        // 1. Cek Login (Satpam)
-        if (username == null) {
-            return "redirect:/login"; 
-        }
+        // Ambil User
+        User currentUser = userRepository.findByUsername(username); 
 
-        // 2. Ambil data User lengkap (biar bisa nampilin nama asli/foto profil nanti)
-        User currentUser = userRepository.findByEmail(session.getAttribute("loggedInUser").toString()); 
-        // Note: Asumsi session nyimpen username/email. Kalau nyimpen username, ganti findByUsername.
-        // Tapi biar aman, kita pakai variable 'username' yang ada aja.
-        
-        // 3. AMBIL SEMUA POSTINGAN DARI DATABASE
+        // Ambil Semua Post
         List<Post> listPost = postRepository.findAllByOrderByCreatedAtDesc();
+        
+        // AMBIL DAFTAR KATEGORI (Buat Dropdown)
+        List<PostCategory> categories = categoryRepository.findAll(); // <--- AMBIL DATA
 
-        // 4. Kirim ke HTML
         model.addAttribute("username", username);
-        model.addAttribute("posts", listPost); // Kirim daftar post
+        model.addAttribute("posts", listPost);
+        model.addAttribute("categories", categories); // <--- KIRIM KE HTML
         
         return "dashboard"; 
     }
 
     @PostMapping("/post")
-    public String createPost(@RequestParam String content, HttpSession session) {
+    public String createPost(@RequestParam String content, 
+                             @RequestParam Long categoryId, // <--- TERIMA INPUT KATEGORI
+                             HttpSession session) {
+        
         String username = (String) session.getAttribute("loggedInUser");
-        if (username == null) {
-            return "redirect:/login";
-        }
+        if (username == null) return "redirect:/login";
 
         User user = userRepository.findByUsername(username);
         
@@ -61,7 +59,9 @@ public class HomeController {
             newPost.setContent(content);
             newPost.setUser(user);
             newPost.setLikeCount(0);
-            newPost.setCategoryId(1L); 
+            
+            // PAKAI KATEGORI PILIHAN USER
+            newPost.setCategoryId(categoryId); 
             
             postRepository.save(newPost);
         }
