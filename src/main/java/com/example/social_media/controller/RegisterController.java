@@ -1,5 +1,6 @@
 package com.example.social_media.controller;
 
+import jakarta.servlet.http.HttpSession; // Jangan lupa import ini
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -7,7 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RegisterController {
 
     @GetMapping("/register")
-    public String showRegisterPage() {
-        return "register"; // Akan mencari file register.html
+    public String showRegisterPage(HttpSession session) { // Tambahkan parameter session
+        // CEK: Kalau user SUDAH login, ngapain daftar lagi? Tendang ke Dashboard (/)
+        if (session.getAttribute("loggedInUser") != null) {
+            return "redirect:/";
+        }
+
+        return "register";
     }
 }

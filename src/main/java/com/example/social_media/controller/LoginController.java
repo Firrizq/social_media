@@ -17,7 +17,13 @@ public class LoginController {
     private UserRepository userRepository; // Panggil alat repository
 
     @GetMapping("/login")
-    public String showLoginPage() {
+    public String showLoginPage(HttpSession session) { // Tambahkan parameter session
+        // CEK: Kalau user SUDAH login, tendang ke Dashboard (/)
+        if (session.getAttribute("loggedInUser") != null) {
+            return "redirect:/";
+        }
+
+        // Kalau belum login, baru boleh lihat halaman login
         return "login";
     }
 
