@@ -13,8 +13,8 @@ public class HomeController {
         // 1. Cek isi kantong (Session)
         String username = (String) session.getAttribute("loggedInUser");
 
-        // 2. LOGIKA SATPAM IS BACK! 👮‍♂️
-        // Kalau username kosong (belum login), TENDANG ke halaman login
+        // 2. Logika Satpam
+        // username kosong = redirect ke login
         if (username == null) {
             return "redirect:/login"; 
         }

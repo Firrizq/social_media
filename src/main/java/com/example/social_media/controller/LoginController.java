@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
 
     @Autowired
-    private UserRepository userRepository; // Panggil alat repository tadi
+    private UserRepository userRepository; // Panggil alat repository
 
     @GetMapping("/login")
     public String showLoginPage() {
         return "login";
     }
 
-    // INI LOGIKA BARU: Menangani tombol "Sign In"
     @PostMapping("/login")
     public String processLogin(@RequestParam String email, 
                                @RequestParam String password, 
