@@ -1,28 +1,184 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Beranda</title>
+    <title>Social Media</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Efek Glassmorphism */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<body class="bg-[#0f172a] text-slate-200 min-h-screen selection:bg-indigo-500 selection:text-white">
 
-    <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-sm">
-        <div class="mb-4">
-            <div class="w-24 h-24 bg-blue-500 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold">
-                <div class="w-24 h-24 bg-blue-500 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold">
-                    <span th:if="${username != null}" th:text="${#strings.substring(username, 0, 1).toUpperCase()}">U</span>
-                    <span th:unless="${username != null}">?</span>
+    <div class="container mx-auto px-4 lg:px-6 h-screen flex gap-6 overflow-hidden">
+
+        <div class="hidden lg:flex w-64 flex-col justify-between py-6 h-full">
+            
+            <div class="space-y-8">
+                <div class="flex items-center gap-3 px-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <i class="fa-solid fa-bolt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tight text-white">Social Media</span>
                 </div>
+
+                <nav class="space-y-2">
+                    <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-indigo-600/10 text-indigo-400 font-semibold border-l-4 border-indigo-500 transition-all">
+                        <i class="fa-solid fa-house text-lg"></i>
+                        <span>Beranda</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all">
+                        <i class="fa-solid fa-hashtag text-lg"></i>
+                        <span>Explore</span>
+                    </a>
+                </nav>
+
+                <button class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-bold text-white shadow-lg shadow-indigo-600/20 hover:scale-[1.02] hover:shadow-indigo-600/40 transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Buat Post
+                </button>
+            </div>
+
+            <div class="glass-panel p-3 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-slate-800 transition">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-500 flex items-center justify-center text-slate-900 font-bold shadow-md">
+                    <span th:text="${#strings.substring(username, 0, 1).toUpperCase()}">U</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="font-bold text-sm text-white truncate" th:text="${username}">Username</p>
+                    <p class="text-xs text-slate-500 truncate">Online</p>
+                </div>
+                <a th:href="@{/logout}" class="p-2 text-slate-500 hover:text-red-400 transition">
+                    <i class="fa-solid fa-power-off"></i>
+                </a>
             </div>
         </div>
-        
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">
-            Halo, <span th:text="${username}" class="text-blue-600">User</span>!
-        </h1>
-        
-        <p class="text-gray-600 mb-6">Selamat datang kembali di dashboard.</p>
-        
-        <a th:href="@{/logout}" class="text-sm text-red-500 hover:underline">Keluar (Logout)</a>
+
+        <div class="flex-1 max-w-2xl py-6 h-full flex flex-col">
+            
+            <div class="flex justify-between items-center mb-6 px-2">
+                <h1 class="text-2xl font-bold text-white">Timeline</h1>
+                <div class="flex gap-2">
+                    <button class="px-4 py-1.5 rounded-full bg-slate-800 text-xs font-semibold text-white border border-slate-700">For You</button>
+                    <button class="px-4 py-1.5 rounded-full text-slate-500 text-xs font-semibold hover:bg-slate-800/50 transition">Following</button>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto hide-scroll pr-2 space-y-5 pb-20">
+
+                <div class="bg-[#1e293b] rounded-2xl p-5 border border-slate-700/50 shadow-xl">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-500 flex-shrink-0"></div>
+                        <div class="flex-1">
+                            <textarea class="w-full bg-transparent text-slate-200 placeholder-slate-500 text-lg focus:outline-none resize-none" 
+                                      rows="2" placeholder="Bagikan ceritamu hari ini..."></textarea>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-4 pt-4 border-t border-slate-700/50">
+                        <div class="flex gap-4 text-indigo-400">
+                            <i class="fa-regular fa-image cursor-pointer hover:text-indigo-300 transition"></i>
+                            <i class="fa-solid fa-paperclip cursor-pointer hover:text-indigo-300 transition"></i>
+                            <i class="fa-regular fa-face-smile cursor-pointer hover:text-indigo-300 transition"></i>
+                        </div>
+                        <button class="px-6 py-2 bg-slate-200 text-slate-900 rounded-lg font-bold text-sm hover:bg-white transition opacity-50 cursor-not-allowed">
+                            Kirim <i class="fa-regular fa-paper-plane ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div th:each="post : ${posts}" class="bg-[#1e293b] rounded-2xl p-5 border border-slate-800 hover:border-indigo-500/30 transition duration-300 shadow-lg group">
+                    
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex gap-3 items-center">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                <span th:text="${#strings.substring(post.user.username, 0, 1).toUpperCase()}">U</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm" th:text="${post.user.username}">User</h3>
+                                <p class="text-xs text-slate-500" th:text="${#temporals.format(post.createdAt, 'dd MMM • HH:mm')}">Waktu</p>
+                            </div>
+                        </div>
+                        <button class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
+
+                    <p class="text-slate-300 text-[15px] leading-relaxed mb-4 pl-[52px]" th:text="${post.content}">
+                        Content goes here...
+                    </p>
+
+                    <div class="flex items-center gap-6 pl-[52px] text-slate-500 text-sm">
+                        <button class="flex items-center gap-2 hover:text-pink-500 transition group-hover/like">
+                            <div class="p-1.5 rounded-full hover:bg-pink-500/10 transition">
+                                <i class="fa-regular fa-heart"></i>
+                            </div>
+                            <span th:text="${post.likeCount}">0</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-400 transition">
+                            <div class="p-1.5 rounded-full hover:bg-blue-400/10 transition">
+                                <i class="fa-regular fa-comment"></i>
+                            </div>
+                            <span th:text="${post.commentCount}">0</span>
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-emerald-400 transition ml-auto">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div th:if="${posts.isEmpty()}" class="text-center py-12 bg-[#1e293b] rounded-2xl border border-dashed border-slate-700">
+                    <div class="inline-block p-4 rounded-full bg-slate-800 mb-3">
+                        <i class="fa-solid fa-ghost text-2xl text-slate-500"></i>
+                    </div>
+                    <h3 class="text-slate-300 font-medium">Belum ada aktivitas</h3>
+                    <p class="text-slate-500 text-sm mt-1">Jadilah yang pertama memposting sesuatu!</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hidden xl:block w-80 py-6 space-y-6">
+            
+            <div class="relative group">
+                <input type="text" placeholder="Cari postingan..." 
+                       class="w-full bg-[#1e293b] border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-3 pl-10 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-lg">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 group-focus-within:text-indigo-400 transition"></i>
+            </div>
+
+            <div class="bg-[#1e293b] rounded-2xl border border-slate-800 p-5 shadow-lg">
+                <h3 class="font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-orange-500"></i> Trending Topik
+                </h3>
+                <div class="space-y-4">
+                    <div class="cursor-pointer group">
+                        <p class="text-xs text-slate-500 mb-0.5">Technology</p>
+                        <p class="text-sm font-semibold text-slate-200 group-hover:text-indigo-400 transition">#SpringFramework</p>
+                    </div>
+                    <div class="cursor-pointer group">
+                        <p class="text-xs text-slate-500 mb-0.5">Design</p>
+                        <p class="text-sm font-semibold text-slate-200 group-hover:text-indigo-400 transition">UI/UX 2026</p>
+                    </div>
+                    <div class="cursor-pointer group">
+                        <p class="text-xs text-slate-500 mb-0.5">Life</p>
+                        <p class="text-sm font-semibold text-slate-200 group-hover:text-indigo-400 transition">Kopi Senja</p>
+                    </div>
+                </div>
+                <button class="w-full mt-4 text-xs text-indigo-400 font-semibold hover:underline text-left">Lihat Semua</button>
+            </div>
+
+            <div class="text-xs text-slate-600 px-2 leading-relaxed">
+                <p>Made with ❤️ by <span class="text-slate-400">Kelompok 2</span></p>
+                <p class="mt-1">© 2026 SocialProject</p>
+            </div>
+
+        </div>
+
     </div>
 
 </body>
