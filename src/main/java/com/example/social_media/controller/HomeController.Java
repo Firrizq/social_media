@@ -10,18 +10,17 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(HttpSession session, Model model) {
+        // 1. Cek isi kantong (Session)
         String username = (String) session.getAttribute("loggedInUser");
-        
-        // CCTV
-        System.out.println("Cek Login: User isinya = " + username);
 
-        // LOGIKA SATPAM
+        // 2. LOGIKA SATPAM IS BACK! 👮‍♂️
+        // Kalau username kosong (belum login), TENDANG ke halaman login
         if (username == null) {
-            System.out.println("User kosong, tendang ke login!");
             return "redirect:/login"; 
         }
 
+        // 3. Kalau lolos (sudah login), baru boleh masuk dashboard
         model.addAttribute("username", username);
-        return "dashboard"; // <--- GANTI JADI INI (sesuai nama file baru)
+        return "dashboard"; 
     }
 }
